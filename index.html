@@ -37,8 +37,7 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      /* 導覽列維持變細的 1.1rem */
-      padding: 1.1rem 5%;
+      padding: 2rem 5%;
       position: fixed;
       width: 100%;
       top: 0;
@@ -238,6 +237,7 @@
       flex-direction: column;
     }
 
+    /* 名字：中英同一行，英文沿用和中文相同的字體，只縮小字級 */
     .about-name,
     .about-name .about-name-en {
       font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", "Heiti TC", sans-serif;
@@ -306,15 +306,13 @@
       font-weight: 700;
     }
 
-    /* ================= 第三頁：手作作品 (Physical Works) ================= */
+    /* ================= 第三頁：手作作品 ================= */
     .works-slider-section {
       background-color: #141414;
-      /* 將原本的 6.5rem 往上調小至 4.8rem，讓整個區塊往上提並在畫面中置中 */
-      padding: 4.8rem 8% 2rem;
+      padding: 6.5rem 8% 2rem;
       display: flex;
       flex-direction: column;
       position: relative;
-      justify-content: center;
     }
 
     .slider-wrapper {
@@ -437,6 +435,7 @@
       border-color: #fff;
     }
 
+    /* 🎯 第三頁左右切換按鈕設定（左側按鈕已往左移） */
     .works-slider-section .nav-zone {
       position: absolute;
       top: 0;
@@ -468,18 +467,17 @@
     }
     .works-slider-section .nav-zone:hover .nav-btn { opacity: 1; }
 
-    /* ================= 第四頁：互動遊戲 (Digital Works) ================= */
+    /* ================= 第四頁：互動遊戲（編輯式排版） ================= */
     .game-section {
       background-color: #0d0d0d;
-      /* 將原本的 7rem 往上調小至 4.8rem，讓整個數位作品區塊往上提並在畫面中置中 */
-      padding: 4.8rem 9% 2.5rem;
+      padding: 7rem 9% 2.5rem;
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
-      justify-content: center;
     }
 
+    /* 燈籠暖光：呼應「暖黃燈籠光暈」 */
     .game-section::before {
       content: "";
       position: absolute;
@@ -515,6 +513,7 @@
       align-items: center;
     }
 
+    /* 左：圖片 */
     .game-left {
       display: flex;
       flex-direction: column;
@@ -522,10 +521,12 @@
       width: 100%;
     }
 
+    /* 黑色外框：固定比例、整體縮小 */
     .game-photo-wrapper {
-      --img-w: 138.9%;     
-      --img-left: -19.4%;  
-      --img-top: -15.5%;   
+      /* 截圖皆為 1920×1080 時可直接使用；以下三個數字控制框內照片的裁切範圍 */
+      --img-w: 138.9%;     /* 照片寬度：越大，照片放得越大 */
+      --img-left: -19.4%;  /* 照片往左位移（左右置中用） */
+      --img-top: -15.5%;   /* 照片往上位移（用來裁掉瀏覽器分頁列） */
       position: relative;
       width: 100%;
       aspect-ratio: 1.59 / 1;
@@ -554,6 +555,7 @@
       pointer-events: auto;
     }
 
+    /* ✅ 照片等比放大，只裁掉瀏覽器分頁列與工作列，遊戲畫面四周保留留白 */
     .game-slide-item img {
       position: absolute;
       width: var(--img-w);
@@ -564,6 +566,7 @@
       display: block;
     }
 
+    /* 右：文字區 + 底部關卡進度列 */
     .game-right {
       position: relative;
       height: 100%;
@@ -595,6 +598,7 @@
       padding-top: 1rem;
     }
 
+    /* 關卡小標籤：STAGE 01 / 04 */
     .stage-label {
       font-size: 0.78rem;
       font-weight: 400;
@@ -648,6 +652,7 @@
       line-height: 1.85;
     }
 
+    /* 能力標籤（小膠囊） */
     .tag-row {
       display: flex;
       flex-wrap: wrap;
@@ -676,6 +681,7 @@
       border-color: #fff;
     }
 
+    /* 底部關卡進度列（可點擊跳關） */
     .game-progress {
       flex-shrink: 0;
       display: grid;
@@ -719,6 +725,7 @@
       border-top-color: #e3a94b;
     }
 
+    /* 左右切換按鈕：位置與第三頁相同 */
     .game-section .nav-zone {
       position: absolute;
       top: 0;
@@ -750,6 +757,7 @@
     }
     .game-section .nav-zone:hover .nav-btn { opacity: 1; }
 
+    /* 簡介頁內部的小輪播（封面 → 故事三頁 → 選單） */
     .sub-slides-container {
       position: relative;
       width: 100%;
@@ -807,6 +815,7 @@
       background: rgba(255, 255, 255, 0.2);
     }
 
+    /* 燈箱 Modal */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -921,7 +930,7 @@
                 在立體結構實作中，逐漸釐清自己真正熱愛的方向——<br>
                 比起純粹的機構，更傾向於版面編輯、視覺傳達與材質美學的結合。<br>
                 現就讀台北市立大學學習與媒材設計學系。<br>
-                在這裡將過去扎實的空間結構邏輯，<br>
+                在這裡，我將過去扎實的空間結構邏輯，<br>
                 轉化為更具敘事性與互動感的視覺體驗。
               </p>
             </div>
@@ -996,7 +1005,7 @@
               <h3 class="slide-title">Changing</h3>
               <div class="detail-section"><h4>主要材料</h4><p>絲襪布、鐵、釣魚線</p></div>
               <div class="detail-section"><h4>設計理念</h4><p>利用絲襪布的透光性使作品呈現出不同深淺效果。</p></div>
-              <div class="detail-section"><h4>困難點</h4><p>釣魚線綁 in 鐵架上易彈開及滑動。</p></div>
+              <div class="detail-section"><h4>困難點</h4><p>釣魚線綁在鐵架上易彈開及滑動。</p></div>
               <div class="detail-section"><h4>解決方法</h4><p>用銼刀在欲綁線處劃出淺刻痕，使釣魚線能固定住。</p></div>
             </div>
           </div>
@@ -1242,6 +1251,7 @@
         item.classList.toggle('active', idx === gameCurrentIndex);
       });
 
+      // 切換時，文字區捲回頂端
       document.getElementById('gameContentBox').scrollTop = 0;
     }
 
