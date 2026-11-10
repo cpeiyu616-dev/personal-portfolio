@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K's Personal Portfolio</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    html, body {
+      background-color: #0d0d0d;
+      color: #f5f5f5;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* 保留整頁強制對齊滑動（切換區塊時自動吸附鎖定） */
+    html {
+      scroll-snap-type: y mandatory;
+    }
+
+    header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 2.5rem 8%;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      background: rgba(13, 13, 13, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    nav a {
+      color: #aaa;
+      text-decoration: none;
+      margin-left: 2.5rem;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    /* 主畫面 (Hero) - 強制對齊第一頁 */
+    .hero {
+      min-height: 100vh;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8%;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+      scroll-snap-align: start;
+    }
+
+    /* 巨型 K：改用 vw 單位，讓它能隨畫面縮放且位置不跑掉 */
+    .hero-watermark-k {
+      position: absolute;
+      top: 40%;
+      left: 75%;
+      transform: translate(-50%, -50%);
+      font-size: 110vw;
+      line-height: 0.5;
+      font-weight: 100;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", sans-serif;
+      color: rgba(255, 255, 255, 0.04);
+      user-select: none;
+      pointer-events: none;
+      z-index: -1;
+      white-space: nowrap;
+    }
+
+    .hero-profile {
+      flex: 0.8;
+      max-width: 280px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .avatar-wrapper {
+      width: 160px;
+      height: 160px;
+      border-radius: 0;
+      overflow: hidden;
+      border: 1px solid #333;
+      margin-bottom: 1.2rem;
+      background-color: #222;
+    }
+
+    .profile-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile-info h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.4rem;
+      color: #fff;
+    }
+
+    .profile-info p {
+      color: #999;
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-title {
+      flex: 1.2;
+      margin-left: 4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title h1 {
+      font-size: 3.2rem;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: #fff;
+    }
+
+    .hero-title span {
+      color: #888;
+      display: block;
+      font-size: 2rem;
+      margin-top: 0.5rem;
+    }
+
+    .hero-title p {
+      color: #aaa;
+      font-size: 1rem;
+    }
+
+    /* 頁面 2：作品輪播區塊 - 固定 100vh 且具備 scroll-snap 鎖定 */
+    .works-slider-section {
+      height: 100vh;
+      min-height: 100vh;
+      padding: 6.5rem 8% 2rem;
+      background-color: #141414;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      overflow: hidden;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #fff;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #333;
+      padding-bottom: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .section-title .en-bold {
+      font-weight: 700;
+    }
+
+    /* 滑動區域容器 */
+    .slider-wrapper {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      min-height: 0;
+    }
+
+    .slides-container {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* 單個作品頁面：左圖右文 */
+    .slide-item {
+      min-width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 45% 52%;
+      gap: 3%;
+      align-items: center;
+    }
+
+    /* 左側獨立作品展示區塊通用設定 */
+    .slide-media-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-height: 520px;
+      background-color: #111;
+      border: 1px solid #2e2e2e;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 「綻放」影片：使用 contain，確保完整呈現影片內容、燈箱與底部影子，絕對不被亂裁切 */
+    .slide-media-1 video {
+      width: 140%;
+      height: 140%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* 其他圖片作品：統一使用 cover 填滿黑框外框 */
+    .slide-media-2 img, .slide-media-3 img, .slide-media-4 img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 右側簡介內容 */
+    .slide-details {
+      height: 100%;
+      max-height: 520px;
+      overflow-y: auto;
+      padding-right: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    /* 自訂順暢捲軸 */
+    .slide-details::-webkit-scrollbar {
+      width: 6px;
+    }
+    .slide-details::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.2);
+    }
+    .slide-details::-webkit-scrollbar-thumb {
+      background: #666;
+      border-radius: 3px;
+    }
+    .slide-details::-webkit-scrollbar-thumb:hover {
+      background: #999;
+    }
+
+    .slide-title {
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: #fff;
+      margin-bottom: 0.4rem;
+      border-bottom: 1px solid #222;
+      padding-bottom: 0.4rem;
+    }
+
+    .detail-section {
+      border-left: 2px solid #444;
+      padding-left: 1rem;
+    }
+
+    .detail-section h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-section p {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .solution-card {
+      background: #181818;
+      padding: 0.8rem;
+      border: 1px solid #262626;
+    }
+
+    .solution-card .tag {
+      font-size: 0.75rem;
+      color: #888;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+      display: block;
+    }
+
+    .solution-card p {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: #ddd;
+    }
+
+    .highlight-box {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.8rem 1rem;
+      border: 1px solid #333;
+      margin-top: 0.4rem;
+    }
+
+    /* 觀看完整影片超連結，與上方段落隔開一行 */
+    .view-original-btn {
+      display: inline-block;
+      font-size: 0.85rem;
+      color: #aaa;
+      text-decoration: none;
+      border-bottom: 1px solid #555;
+      padding-bottom: 2px;
+      margin-top: 1rem;
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    .view-original-btn:hover {
+      color: #fff;
+      border-color: #fff;
+    }
+
+    /* 燈箱 Modal 樣式：滿版黑色背景，自動循環播放 */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content-wrapper {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 2.5rem;
+      right: 3rem;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, transform 0.3s;
+      z-index: 1001;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255,255,255,0.15);
+      transform: scale(1.1);
+    }
+
+    /* 左右兩側感應熱區與懸浮箭頭 */
+    .nav-zone {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    .prev-nav-zone {
+      left: 0;
+    }
+
+    .next-nav-zone {
+      right: 0;
+    }
+
+    .nav-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+      opacity: 0;
+      transition: opacity 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+      user-select: none;
+    }
+
+    .nav-zone:hover .nav-btn {
+      opacity: 1;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.1);
+    }
+
+    /* 底部導覽圓點 */
+    .slider-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      padding-top: 1rem;
+      flex-shrink: 0;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #333;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: #fff;
+      transform: scale(1.3);
+    }
+
+    @media (max-width: 900px) {
+      html {
+        scroll-snap-type: none;
+      }
+      .works-slider-section {
+        height: auto;
+        padding: 5rem 6%;
+      }
+      .slide-item {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        height: auto;
+      }
+      .slide-details {
+        height: auto;
+        max-height: none;
+      }
+      .slide-media-wrapper {
+        height: 320px;
+        max-height: none;
+      }
+      .solution-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-zone {
+        width: 60px;
+      }
+      .nav-btn {
+        opacity: 0.7;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#works">Works</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-view">
+    
+    <!-- 頁面 1：主畫面 -->
+    <section class="hero" id="about">
+      <div class="hero-watermark-k">K</div>
+
+      <div class="hero-profile">
+        <div class="avatar-wrapper">
+          <img src="K.jpg" alt="陳姵宇" class="profile-avatar-img">
+        </div>
+        <div class="profile-info">
+          <h2>陳姵宇</h2>
+          <p>實踐工設 → 北市大學材</p>
+          <p>Gmail: cpeiyu616@gmail.com</p>
+        </div>
+      </div>
+
+      <div class="hero-title">
+        <h1>
+          Design & Portfolio
+          <span>K's Personal Portfolio</span>
+        </h1>
+        <p>專注於產品設計與材質結構創作。往下滑動瀏覽作品。</p>
+      </div>
+    </section>
+
+    <!-- 頁面 2：作品單頁翻頁式輪播 -->
+    <section class="works-slider-section" id="works">
+      <h2 class="section-title"><span class="en-bold">Featured Works /</span> 精選作品</h2>
+      
+      <div class="slider-wrapper">
+        <div class="slides-container" id="slidesContainer">
+          
+          <!-- Slide 1: 綻放 -->
+          <div class="slide-item">
+            <div class="slide-media-wrapper slide-media-1">
+              <video src="blooming.mp4" autoplay loop muted playsinline></video>
+            </div>
+            <div class="slide-details">
+              <h3 class="slide-title">綻放</h3>
+              <div class="detail-section">
+                <h4>主要材料</h4>
+                <p>絲襪布、壓克力</p>
+              </div>
+              <div class="detail-section">
+                <h4>設計理念</h4>
+                <p>藉由光影的位置移動及花朵的旋轉，使影子產生大小變化呈現花朵綻放的姿態。</p>
+              </div>
+              <div class="detail-section">
+                <h4>困難點與解決方案</h4>
+                <div class="solution-grid">
+                  <div class="solution-card">
+                    <span class="tag">Problem 01</span>
+                    <p>非永久性電子元件的替換。</p>
+                  </div>
+                  <div class="solution-card">
+                    <span class="tag">Solution 01</span>
+                    <p>需更換永久性電子元件的地方底層不封死，在不影響美觀的前提下較易更換。</p>
+                  </div>
+                  <div class="solution-card">
+                    <span class="tag">Problem 02</span>
+                    <p>作品主體重量不均倒塌。</p>
+                  </div>
+                  <div class="solution-card">
+                    <span class="tag">Solution 02</span>
+                    <p>主體的燈箱為前凸式且須供電，將供電裝置外接於作品後方，不影響美觀且能平衡重量。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="detail-section">
+                <h4>設計小巧思</h4>
+                <div class="highlight-box">
+                  <p>選用絲襪布材質是因其「透光性」，玫瑰花是以鐵絲製成骨架後包上絲襪布組合而成，光影呈現會因花瓣重疊程度而有深淺差異，使其看起來更有層次。</p>
+                  <!-- 觀看完整影片超連結，與上方段落隔開一行 -->
+                  <a href="javascript:void(0);" onclick="openVideoModal()" class="view-original-btn">Watch the full light and shadow animation ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2: 平衡 -->
+          <div class="slide-item">
+            <div class="slide-media-wrapper slide-media-2">
+              <img src="balance.jpg" alt="平衡 展示圖">
+            </div>
+            <div class="slide-details">
+              <h3 class="slide-title">平衡</h3>
+              <div class="detail-section">
+                <h4>主要材料</h4>
+                <p>木條、鐵</p>
+              </div>
+              <div class="detail-section">
+                <h4>設計理念</h4>
+                <p>利用長短不一的木條以錯位方式排列製成坐墊，製成一可做的支撐結構。</p>
+              </div>
+              <div class="detail-section">
+                <h4>困難點與解決方案</h4>
+                <div class="solution-grid">
+                  <div class="solution-card">
+                    <span class="tag">Problem 01</span>
+                    <p>為使坐墊達成平衡不傾斜，木條的重量分布難以計算。</p>
+                  </div>
+                  <div class="solution-card">
+                    <span class="tag">Problem 02</span>
+                    <p>木條的卡榫設計因每層擺放方式不同（立著擺、躺著擺），凹槽深度難以計算。</p>
+                  </div>
+                </div>
+                <div class="highlight-box" style="margin-top: 0.8rem;">
+                  <p><strong>解決方法：</strong>先將最底層木條固定於底座，再依序擺放後面幾層，確定擺放後不會傾倒再著手計算凹槽深度。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3: 錯位 -->
+          <div class="slide-item">
+            <div class="slide-media-wrapper slide-media-3">
+              <img src="錯位.jpg" alt="錯位 展示圖">
+            </div>
+            <div class="slide-details">
+              <h3 class="slide-title">錯位</h3>
+              <div class="detail-section">
+                <h4>主要材料</h4>
+                <p>木頭、銅線、塑膠球</p>
+              </div>
+              <div class="detail-section">
+                <h4>設計理念</h4>
+                <p>讓主體以錯位且看起來懸浮的方式呈現幾何。</p>
+              </div>
+              <div class="detail-section">
+                <h4>困難點與解決方案</h4>
+                <div class="solution-grid">
+                  <div class="solution-card">
+                    <span class="tag">Problem</span>
+                    <p>上半部主體重量較重會使整體向後傾倒（上下部分主體位置不可對調，因呈現效果較不佳）。</p>
+                  </div>
+                  <div class="solution-card">
+                    <span class="tag">Solution</span>
+                    <p>上半部主體削掉一部分去平衡，塑膠球、銅線在下半部主體作配重。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="detail-section">
+                <h4>設計小巧思</h4>
+                <div class="highlight-box">
+                  <p>當初設計時上半部主體並沒有削掉一角的想法，是在打磨木頭時意外削掉，索性將錯就錯多削一點，結果成品意外不錯也解決配重問題。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 4: Changing -->
+          <div class="slide-item">
+            <div class="slide-media-wrapper slide-media-4">
+              <img src="三十六計.jpg" alt="Changing 展示圖">
+            </div>
+            <div class="slide-details">
+              <h3 class="slide-title">Changing</h3>
+              <div class="detail-section">
+                <h4>主要材料</h4>
+                <p>絲襪布、鐵、釣魚線</p>
+              </div>
+              <div class="detail-section">
+                <h4>設計理念</h4>
+                <p>利用絲襪布的透光特質使作品從各個角度看起來因重疊比例不同呈現出不同深淺效果。</p>
+              </div>
+              <div class="detail-section">
+                <h4>困難點與解決方案</h4>
+                <div class="solution-grid">
+                  <div class="solution-card">
+                    <span class="tag">Problem</span>
+                    <p>釣魚線綁在鐵架上易彈開及滑動。</p>
+                  </div>
+                  <div class="solution-card">
+                    <span class="tag">Solution</span>
+                    <p>用銼刀在欲綁線處劃出淺刻痕，使釣魚線能固定住。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 左側切換按鈕區 -->
+        <div class="nav-zone prev-nav-zone" onclick="prevSlide()">
+          <div class="nav-btn">❮</div>
+        </div>
+
+        <!-- 右側切換按鈕區 -->
+        <div class="nav-zone next-nav-zone" onclick="nextSlide()">
+          <div class="nav-btn">❯</div>
+        </div>
+      </div>
+
+      <div class="slider-indicators">
+        <div class="dot active" onclick="goToSlide(0)"></div>
+        <div class="dot" onclick="goToSlide(1)"></div>
+        <div class="dot" onclick="goToSlide(2)"></div>
+        <div class="dot" onclick="goToSlide(3)"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 滿版燈箱播放器 -->
+  <div class="modal-overlay" id="videoModal">
+    <button class="modal-close-btn" onclick="closeVideoModal()">✕</button>
+    <div class="modal-content-wrapper">
+      <video src="blooming.mp4" autoplay loop muted playsinline></video>
+    </div>
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    const totalSlides = 4;
+    const slidesContainer = document.getElementById('slidesContainer');
+    const dots = document.querySelectorAll('.dot');
+    let autoSlideTimer;
+
+    function updateSlider() {
+      slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    }
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % totalSlides;
+      updateSlider();
+      resetAutoSlide();
+    }
+
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      updateSlider();
+      resetAutoSlide();
+    }
+
+    function goToSlide(index) {
+      currentIndex = index;
+      updateSlider();
+      resetAutoSlide();
+    }
+
+    function startAutoSlide() {
+      autoSlideTimer = setInterval(() => {
+        nextSlide();
+      }, 23000);
+    }
+
+    function resetAutoSlide() {
+      clearInterval(autoSlideTimer);
+      startAutoSlide();
+    }
+
+    function openVideoModal() {
+      const modal = document.getElementById('videoModal');
+      modal.classList.add('active');
+      clearInterval(autoSlideTimer);
+      const modalVideo = modal.querySelector('video');
+      modalVideo.currentTime = 0;
+      modalVideo.play();
+    }
+
+    function closeVideoModal() {
+      const modal = document.getElementById('videoModal');
+      modal.classList.remove('active');
+      const modalVideo = modal.querySelector('video');
+      modalVideo.pause();
+      startAutoSlide();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('videoModal').classList.contains('active')) {
+        if (e.key === 'Escape') closeVideoModal();
+        return;
+      }
+      if (e.key === 'ArrowRight') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+
+    startAutoSlide();
+  </script>
+
+</body>
+</html>
