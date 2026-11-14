@@ -34,8 +34,9 @@
       scroll-snap-stop: always;
     }
 
-    /* 📌 淺透墨綠色圓點游標 */
-    html, body, section, div, header, nav, main, h1, h2, h3, h4, p, span, b, a, button, video, img {
+    /* 📌 強制全面套用淺透墨綠色圓點游標（包含履歷互動區與抓取狀態） */
+    html, body, section, div, header, nav, main, h1, h2, h3, h4, p, span, b, a, button, video, img,
+    .resume-wrapper, .resume-wrapper:active {
       cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="%234b7a66" fill-opacity="0.6"/></svg>') 11 11, auto !important;
     }
 
@@ -43,14 +44,14 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      padding: 2rem 5%;
+      padding: 1rem 5%;
       position: fixed;
       width: 100%;
       top: 0;
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(10px);
       z-index: 100;
-      height: 96px;
+      height: 64px; 
     }
 
     nav {
@@ -156,7 +157,7 @@
       letter-spacing: 1.5px;
     }
 
-    /* ================= 履歷頁面：照片放大填滿畫面 ================= */
+    /* ================= 履歷頁面 ================= */
     .resume-section {
       background-color: #0d0d0d;
       width: 100vw;
@@ -166,7 +167,7 @@
       flex-direction: column;
       position: relative;
       overflow: hidden;
-      padding-top: 96px;
+      padding-top: 64px;
     }
 
     .resume-container {
@@ -177,7 +178,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      padding: 0; /* 移除內距讓圖片完全展開 */
+      padding: 0;
     }
 
     .resume-wrapper {
@@ -189,17 +190,12 @@
       justify-content: center;
       overflow: hidden;
       position: relative;
-      cursor: grab !important;
-    }
-
-    .resume-wrapper:active {
-      cursor: grabbing !important;
     }
 
     .resume-wrapper img {
-      height: 100%; /* 填滿整個視窗高度 */
+      height: 100%;
       width: auto;
-      object-fit: cover; /* 讓圖片填滿背景，不留黑邊 */
+      object-fit: cover;
       display: block;
       transition: transform 0.05s ease-out;
       transform-origin: center center;
@@ -953,11 +949,11 @@
       </div>
     </section>
 
-    <!-- 履歷頁面 -->
+    <!-- 履歷頁面 (提示：若要把履歷換成向量不失真格式，可將副檔名改為 .svg 並確保該檔案存在) -->
     <section class="resume-section" id="resume">
       <div class="resume-container">
         <div class="resume-wrapper" id="resumeWrapper">
-          <img src="resume.jpg" alt="Resume - 陳姵宇" id="resumeImg">
+          <img src="resume.svg" alt="Resume - 陳姵宇" id="resumeImg" onerror="this.onerror=null; this.src='resume.jpg';">
         </div>
         <div class="resume-hint">Notice: Scroll or pinch to zoom, click and drag to pan</div>
       </div>
@@ -1429,6 +1425,7 @@
       closeVideoModal();
     });
 
+    /* ---------- 鍵盤上下鍵完美切換頁面（解決筆電鍵盤無法換頁問題） ---------- */
     document.addEventListener('keydown', (e) => {
       if (document.getElementById('videoModal').classList.contains('active')) {
         if (e.key === 'Escape') {
@@ -1436,6 +1433,15 @@
         }
         return;
       }
+
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+        e.preventDefault();
+        scrollToSection(currentSectionIndex + 1);
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        scrollToSection(currentSectionIndex - 1);
+      }
+
       if (currentSectionIndex === 3) {
         if (e.key === 'ArrowRight') nextSlide();
         if (e.key === 'ArrowLeft') prevSlide();
