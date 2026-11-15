@@ -12,14 +12,12 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
-    /* 設定整頁可滾動並開啟強制分頁對齊 (Scroll Snap) */
     html, body {
       background-color: #0d0d0d;
       color: #000000;
       line-height: 2.3;
       overflow-x: hidden;
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
+      overflow-y: hidden;
       height: 100vh;
     }
 
@@ -30,11 +28,9 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
     }
 
-    /* 📌 強制全面套用淺透墨綠色圓點游標（包含履歷互動區與抓取狀態） */
+    /* 📌 強制全面套用淺透墨綠色圓點游標 */
     html, body, section, div, header, nav, main, h1, h2, h3, h4, p, span, b, a, button, video, img,
     .resume-wrapper, .resume-wrapper:active {
       cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="%234b7a66" fill-opacity="0.6"/></svg>') 11 11, auto !important;
@@ -362,7 +358,7 @@
       text-align: left;
     }
 
-    /* ================= 簡潔乾淨的大標題（無外框） ================= */
+    /* ================= 簡潔乾淨的大標題 ================= */
     .section-title {
       font-size: 1.5rem;
       font-weight: 300;
@@ -547,15 +543,20 @@
       overflow: hidden;
     }
 
-    .game-section::before {
+    /* 📌 暖黃光暈改掛在底下頁碼列：中心落在頁碼列下緣以外，
+          只有柔和的上緣暈到頁碼附近，不會蓋到內文 */
+    .game-progress::after {
       content: "";
       position: absolute;
-      left: -8%;
-      top: 26%;
-      width: 62vw;
-      height: 62vw;
-      background: radial-gradient(circle, rgba(227, 169, 75, 0.10) 0%, rgba(227, 169, 75, 0) 62%);
+      left: 50%;
+      bottom: -110px;
+      width: 135%;
+      height: 190px;
+      transform: translateX(-50%);
+      filter: blur(14px);
+      background: radial-gradient(ellipse at center, rgba(227, 169, 75, 0.15) 0%, rgba(227, 169, 75, 0.08) 35%, rgba(227, 169, 75, 0.03) 60%, rgba(227, 169, 75, 0) 80%);
       pointer-events: none;
+      z-index: -1;
     }
 
     .game-section .section-title {
@@ -598,7 +599,6 @@
       aspect-ratio: 1.59 / 1;
       background-color: #111;
       border: 1px solid #2e2e2e;
-      box-shadow: 0 0 120px rgba(227, 169, 75, 0.10);
       overflow: hidden;
     }
 
@@ -629,6 +629,15 @@
       left: var(--img-left);
       top: var(--img-top);
       display: block;
+    }
+
+    /* 📌 針對結算畫面 (ga5.png) 放大填滿黑框 */
+    .game-slide-item img[src*="ga5.png"] {
+      width: 100% !important;
+      height: 100% !important;
+      left: 0 !important;
+      top: 0 !important;
+      object-fit: cover !important;
     }
 
     .game-right {
@@ -749,6 +758,8 @@
       grid-template-columns: repeat(6, 1fr);
       gap: 0.5rem;
       padding-top: 1.2rem;
+      position: relative;
+      z-index: 2;
     }
 
     .progress-item {
@@ -759,6 +770,7 @@
       text-align: left;
       color: #666;
       transition: color 0.4s ease, border-color 0.4s ease;
+      cursor: pointer;
     }
 
     .progress-item .p-num {
@@ -786,6 +798,7 @@
       border-top-color: #e3a94b;
     }
 
+    /* 📌 左右切換按鈕設定 */
     .game-section .nav-zone {
       position: absolute;
       top: 0;
@@ -814,6 +827,7 @@
       backdrop-filter: blur(5px);
       opacity: 0;
       transition: opacity 0.3s ease, background-color 0.3s ease;
+      pointer-events: auto;
     }
     .game-section .nav-zone:hover .nav-btn { opacity: 1; }
 
@@ -842,8 +856,8 @@
 
     .sub-next-btn {
       position: absolute;
-      bottom: 1rem;
-      right: 1rem;
+      bottom: 15px;
+      right: 15px;
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.3);
       color: #fff;
@@ -949,7 +963,7 @@
       </div>
     </section>
 
-    <!-- 履歷頁面 (提示：若要把履歷換成向量不失真格式，可將副檔名改為 .svg 並確保該檔案存在) -->
+    <!-- 履歷頁面 -->
     <section class="resume-section" id="resume">
       <div class="resume-container">
         <div class="resume-wrapper" id="resumeWrapper">
@@ -1047,7 +1061,8 @@
               <div class="detail-section"><h4>主要材料</h4><p>木頭、銅線、塑膠球</p></div>
               <div class="detail-section"><h4>設計理念</h4><p>讓主體以錯位且看起來懸浮的方式呈現幾何。</p></div>
               <div class="detail-section"><h4>困難點</h4><p>上半部主體重量較重會使整體向後傾倒(上下部分主體位置不可對調，因呈現效果較不佳)。</p></div>
-              <div class="detail-section"><h4>解決方法</h4><p>上半部主體削掉一部分去平衡，塑膠球、銅線在下半部主體作配重設計小巧思:當初設計時上半部主體並沒有削掉一角的想法，是在打磨木頭時意外削掉，索性將錯就錯多削一點，結果成品意外不錯也解決配重問題。</p></div>
+              <div class="detail-section"><h4>解決方法</h4><p>上半部主體削掉一部分去平衡，塑膠球、銅線在下半部主體作配重。</p></div>
+              <div class="detail-section"><h4>設計小巧思</h4><p>當初設計時上半部主體並沒有削掉一角的想法，是在打磨木頭時意外削掉，索性將錯就錯多削一點，結果成品意外不錯也解決配重問題。</p></div>
             </div>
           </div>
 
@@ -1209,15 +1224,46 @@
       currentSectionIndex = index;
       sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
 
+      if (index === 3) {
+        currentIndex = 0;
+        updateSlider();
+        resetAutoSlide();
+      }
+
       if (index === 1) {
         scale = 1;
         pointX = 0;
         pointY = 0;
         updateResumeTransform();
       }
+
+      /* 📌 進入數位作品：回到簡介第一頁（深夜拉麵封面）再開始輪播；離開則停止計時 */
+      if (index === 4) {
+        gameCurrentIndex = 0;
+        updateGameSlider();
+        showSub('subSlide0', 0);
+        startSubTimer('subSlide0');
+      } else {
+        clearInterval(subTimers['subSlide0']);
+      }
     }
 
-    /* ---------- 履歷圖片互動縮放與平移 (Zoom & Pan) ---------- */
+    /* ---------- 完全鎖定滾輪換頁：只允許在內容區塊內上下滾動檢視 ---------- */
+    window.addEventListener('wheel', (e) => {
+      if (document.getElementById('videoModal').classList.contains('active')) return;
+
+      const target = e.target;
+      const isInsideDetails = target.closest('.slide-details') || target.closest('.game-content-box');
+      const isInsideResume = target.closest('#resumeImg');
+
+      if (isInsideDetails || isInsideResume) {
+        return;
+      }
+
+      e.preventDefault();
+    }, { passive: false });
+
+    /* ---------- 履歷圖片互動縮放與平移 ---------- */
     const resumeImg = document.getElementById('resumeImg');
     const resumeWrapper = document.getElementById('resumeWrapper');
     let scale = 1;
@@ -1231,8 +1277,9 @@
       resumeImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
     }
 
-    resumeWrapper.addEventListener('wheel', (e) => {
+    resumeImg.addEventListener('wheel', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       const zoomIntensity = 0.1;
       if (e.deltaY < 0) {
         scale = Math.min(scale + zoomIntensity, 5);
@@ -1246,7 +1293,7 @@
       updateResumeTransform();
     }, { passive: false });
 
-    resumeWrapper.addEventListener('mousedown', (e) => {
+    resumeImg.addEventListener('mousedown', (e) => {
       isDragging = true;
       startX = e.clientX - pointX;
       startY = e.clientY - pointY;
@@ -1264,7 +1311,7 @@
     });
 
     let initialPinchDistance = null;
-    resumeWrapper.addEventListener('touchstart', (e) => {
+    resumeImg.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
         isDragging = true;
         startX = e.touches[0].clientX - pointX;
@@ -1277,7 +1324,7 @@
       }
     });
 
-    resumeWrapper.addEventListener('touchmove', (e) => {
+    resumeImg.addEventListener('touchmove', (e) => {
       if (isDragging && e.touches.length === 1) {
         pointX = e.touches[0].clientX - startX;
         pointY = e.touches[0].clientY - startY;
@@ -1294,7 +1341,7 @@
       }
     });
 
-    resumeWrapper.addEventListener('touchend', () => {
+    resumeImg.addEventListener('touchend', () => {
       isDragging = false;
       initialPinchDistance = null;
     });
@@ -1397,9 +1444,9 @@
       startSubTimer(containerId);
     }
 
-    startSubTimer('subSlide0');
+    /* 📌 不再於頁面載入時啟動簡介輪播，改為進入數位作品時才開始（見 scrollToSection） */
 
-    /* ---------- 燈箱與瀏覽器歷史紀錄 (支援回上一頁關閉) ---------- */
+    /* ---------- 燈箱與瀏覽器歷史紀錄 ---------- */
     function openVideoModal() {
       const modal = document.getElementById('videoModal');
       modal.classList.add('active');
@@ -1425,7 +1472,7 @@
       closeVideoModal();
     });
 
-    /* ---------- 鍵盤上下鍵完美切換頁面（解決筆電鍵盤無法換頁問題） ---------- */
+    /* ---------- 鍵盤上下鍵切換頁面 ---------- */
     document.addEventListener('keydown', (e) => {
       if (document.getElementById('videoModal').classList.contains('active')) {
         if (e.key === 'Escape') {
