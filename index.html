@@ -929,6 +929,329 @@
       transition: background 0.3s, transform 0.3s;
       z-index: 1001;
     }
+
+    /* ================= 📱 手機版 RWD（寬度 ≤ 768px） ================= */
+    @media (max-width: 768px) and (min-height: 501px) {
+      html {
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        height: auto;
+        overflow: visible;
+        line-height: 1.8;
+      }
+
+      section {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        min-height: 100svh;
+      }
+
+      /* 導覽列：縮小字級與間距，放不下時可橫向滑動 */
+      header {
+        height: 52px;
+        padding: 0 3%;
+        justify-content: center;
+      }
+      nav {
+        gap: 0.9rem;
+        max-width: 100%;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      nav::-webkit-scrollbar { display: none; }
+      nav a, nav button {
+        font-size: 0.72rem;
+        white-space: nowrap;
+        padding: 0.6rem 0;
+      }
+
+      /* ---- 封面 ---- */
+      .hero-cover { padding: 64px 8% 0; }
+      .hero-watermark-k { left: 60%; top: 45%; }
+      .cover-center-wrapper {
+        margin-top: 0;
+        width: 100%;
+        align-items: flex-start;
+      }
+      .cover-content { order: 1; transform: none; margin-top: 0; }
+      .cover-my-stack { font-size: 1.5rem; }
+      .cover-title { font-size: 15vw; }
+      .cover-sub-info {
+        order: 2;
+        position: static;
+        transform: none;
+        left: auto;
+        top: auto;
+        margin-top: 1.4rem;
+        white-space: normal;
+      }
+      .cover-sub-info p { font-size: 0.85rem; line-height: 1.7; }
+
+      /* ---- 履歷 ---- */
+      .resume-section {
+        height: 100vh;
+        height: 100svh;
+        padding-top: 52px;
+      }
+      .resume-wrapper img {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: contain;
+      }
+      .resume-hint {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        text-align: center;
+        font-size: 0.68rem;
+        line-height: 1.5;
+        padding: 5px 10px;
+      }
+
+      /* ---- About Me：上下堆疊 ---- */
+      .about-section {
+        padding-top: 52px;
+        align-items: stretch;
+      }
+      .about-container {
+        height: auto;
+        min-height: calc(100svh - 52px);
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .about-left-group {
+        position: static;
+        width: 100%;
+        padding: 1.5rem 0 1rem;
+      }
+      .about-photo-wrapper {
+        height: 260px;
+        max-height: none;
+        justify-content: center;
+      }
+      .about-right-panel {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex: 1;
+        padding: 2rem 7% 2.5rem;
+      }
+      .about-content-box { max-width: 100%; }
+      .about-header-row {
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-bottom: 1.6rem;
+        padding-bottom: 1.2rem;
+      }
+      .about-name { font-size: 1.6rem; letter-spacing: 3px; }
+      .about-name .about-name-en { display: block; margin-left: 0; font-size: 1rem; }
+      .about-contact-info { text-align: left; }
+      .about-contact-info p { font-size: 0.82rem; word-break: break-all; }
+      .about-text-group p { font-size: 0.95rem; line-height: 2.1; letter-spacing: 0.3px; }
+
+      /* ---- 共用標題 ---- */
+      .section-title { font-size: 1.25rem; }
+
+      /* ---- 手作作品：圖在上、文字在下 ---- */
+      .works-slider-section { padding: 4.5rem 5% 2rem; }
+      .slider-wrapper {
+        flex: none;
+        align-items: flex-start;
+        touch-action: pan-y;
+      }
+      .slides-container { height: auto; align-items: flex-start; }
+      .slide-item {
+        height: auto;
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        align-items: start;
+      }
+      .slide-media-wrapper {
+        height: auto;
+        max-height: none;
+        aspect-ratio: 4 / 3;
+      }
+      .slide-details {
+        height: auto;
+        max-height: none;
+        overflow: visible;
+        padding-right: 0;
+        gap: 1rem;
+      }
+      .slide-title { font-size: 1.7rem; }
+      .detail-section h4 { font-size: 1rem; line-height: 1.8; }
+      .detail-section p { font-size: 0.88rem; }
+
+      .works-slider-section .nav-zone {
+        width: 44px;
+        height: 44px;
+        top: calc(33.5vw - 22px);
+      }
+      .works-slider-section .prev-nav-zone { left: 4px; top: calc(33.5vw - 22px); }
+      .works-slider-section .next-nav-zone { right: 4px; top: calc(33.5vw - 22px); }
+
+      /* ---- 數位作品：圖在上、文字在下 ---- */
+      .game-section {
+        padding: 4.5rem 5% 2rem;
+      }
+      .game-wrapper {
+        flex: none;
+        align-items: flex-start;
+        touch-action: pan-y;
+      }
+      .game-grid {
+        height: auto;
+        grid-template-columns: 1fr;
+        column-gap: 0;
+        row-gap: 1.2rem;
+        align-items: start;
+      }
+      .game-right {
+        height: auto;
+        max-height: none;
+      }
+      .game-content-box {
+        flex: none;
+        overflow: visible;
+        padding-bottom: 0.5rem;
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+      .game-detail-item { margin-block: 0; padding-top: 0.2rem; }
+      .game-detail-item .slide-title { font-size: 1.7rem; letter-spacing: 3px; }
+      .game-detail-item .detail-section { margin-bottom: 1rem; }
+      .game-detail-item .detail-section p { font-size: 0.86rem; line-height: 1.7; }
+      .stage-label { letter-spacing: 3px; }
+
+      .game-progress { gap: 0.3rem; padding-top: 0.8rem; }
+      .progress-item .p-num { font-size: 0.75rem; letter-spacing: 1px; }
+      .progress-item .p-name { font-size: 0.62rem; letter-spacing: 0; line-height: 1.5; }
+      .game-progress::after { bottom: -70px; height: 140px; }
+
+      .game-section .nav-zone {
+        width: 44px;
+        height: 44px;
+        top: calc(28vw - 22px);
+      }
+      .game-section .prev-nav-zone { left: 4px; }
+      .game-section .next-nav-zone { right: 4px; }
+
+      /* 手機沒有 hover，切換鈕常駐顯示並縮小 */
+      .works-slider-section .nav-btn,
+      .game-section .nav-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+        opacity: 0.9;
+        background: rgba(0, 0, 0, 0.45);
+      }
+
+      .sub-next-btn { bottom: 8px; right: 8px; padding: 0.3rem 0.7rem; font-size: 0.75rem; }
+
+      /* ---- 燈箱 ---- */
+      .modal-close-btn { top: 1rem; right: 1rem; width: 40px; height: 40px; }
+    }
+
+    /* ================= 📱 手機橫放（高度 ≤ 500px）：維持電腦版左右並排，整體等比縮小 ================= */
+    @media (max-height: 500px) and (orientation: landscape) {
+      html {
+        font-size: 12px;
+        height: 100vh;
+        height: 100dvh;
+        -webkit-text-size-adjust: 100%;
+      }
+      body { height: 100vh; height: 100dvh; }
+      section {
+        height: 100vh;
+        height: 100dvh;
+        min-height: 100dvh;
+      }
+
+      /* 觸控：由 JS 接管上下滑動換頁；可捲動的文字區仍可自己上下捲 */
+      main { touch-action: none; }
+      .slide-details, .game-content-box { touch-action: pan-y; }
+
+      header { height: 40px; padding: 0 4%; }
+      nav { gap: 1.6rem; }
+      nav a, nav button { font-size: 0.9rem; }
+
+      /* ---- 封面 ---- */
+      .cover-center-wrapper { margin-top: 20px; }
+      .cover-content { transform: translateX(-15vw); margin-top: 20px; }
+      .cover-my-stack { font-size: 1.6rem; }
+      .cover-sub-info { top: calc(50% - 20px); }
+      .cover-sub-info p { font-size: 0.9rem; }
+
+      /* ---- 履歷 ---- */
+      .resume-section { padding-top: 40px; }
+      .resume-hint { bottom: 8px; right: 12px; font-size: 0.7rem; padding: 4px 10px; }
+
+      /* ---- About Me ---- */
+      .about-left-group { padding-top: 48px; }
+      .about-photo-wrapper { height: 68%; max-height: 300px; }
+      .about-right-panel { padding: 48px 6% 0 6%; }
+      .about-header-row { margin-bottom: 1.4rem; padding-bottom: 1rem; }
+      .about-name { font-size: 1.8rem; }
+      .about-name .about-name-en { font-size: 1rem; }
+      .about-birth { margin-top: 0.4rem; }
+      .about-text-group p { font-size: 1rem; line-height: 2.1; }
+
+      /* ---- 共用標題 ---- */
+      .section-title { font-size: 1.3rem; margin-bottom: 0.5rem; padding-bottom: 0.2rem; }
+
+      /* ---- 手作作品 ---- */
+      .works-slider-section { padding: 3.6rem 6% 1rem; }
+      .slide-details { gap: 0.9rem; padding-right: 2.4rem; }
+      .slide-title { font-size: 1.8rem; margin-bottom: 0.2rem; padding-bottom: 0.2rem; }
+      .detail-section h4 { font-size: 1rem; line-height: 1.6; margin-bottom: 0.1rem; }
+      .detail-section p { font-size: 0.95rem; line-height: 1.6; }
+      .highlight-box { padding: 0.5rem 0.7rem; }
+      .view-original-btn { font-size: 0.85rem; margin-top: 0.5rem; }
+
+      .works-slider-section .nav-zone { width: 36px; }
+      .works-slider-section .prev-nav-zone { left: 0; }
+      .works-slider-section .next-nav-zone { right: 0; }
+
+      /* ---- 數位作品 ---- */
+      .game-section { padding: 3.6rem 7% 0.8rem; }
+      .game-detail-item { padding-top: 0.2rem; }
+      .stage-label { font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 0.4rem; }
+      .game-detail-item .slide-title { font-size: 1.8rem; letter-spacing: 4px; margin-bottom: 0.6rem; }
+      .game-detail-item .slide-title::after { margin-top: 0.5rem; }
+      .game-detail-item .detail-section { margin-bottom: 0.7rem; }
+      .game-detail-item .detail-section p { font-size: 0.95rem; line-height: 1.6; }
+      .tag-chip { font-size: 0.8rem; padding: 0.05rem 0.6rem; }
+      .game-progress { padding-top: 0.6rem; gap: 0.3rem; }
+      .progress-item { padding-top: 0.3rem; }
+      .progress-item .p-num { font-size: 0.8rem; line-height: 1.3; }
+      .progress-item .p-name { font-size: 0.7rem; line-height: 1.4; letter-spacing: 0; }
+      .game-progress::after { bottom: -60px; height: 120px; }
+
+      .game-section .nav-zone { width: 40px; }
+      .game-section .prev-nav-zone { left: -43px; }
+      .game-section .next-nav-zone { right: -43px; }
+
+      /* 手機沒有 hover，切換鈕常駐顯示並縮小 */
+      .works-slider-section .nav-btn,
+      .game-section .nav-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+        opacity: 0.7;
+        background: rgba(0, 0, 0, 0.45);
+      }
+      .sub-next-btn { bottom: 8px; right: 8px; padding: 0.2rem 0.6rem; font-size: 0.8rem; }
+
+      /* ---- 燈箱 ---- */
+      .modal-close-btn { top: 0.8rem; right: 1rem; width: 36px; height: 36px; }
+    }
   </style>
 </head>
 <body>
@@ -1218,11 +1541,29 @@
   <script>
     const sections = document.querySelectorAll('main > section');
     let currentSectionIndex = 0;
+    let lastEnteredIndex = 0;
+    let navLock = false;
+    let navLockTimer;
+
+    /* 直立手機 / 窄視窗 = 上下堆疊版；手機橫放 = 電腦版縮小版 */
+    const STACK_QUERY = '(max-width: 768px) and (min-height: 501px)';
+    const COMPACT_QUERY = '(max-height: 500px) and (orientation: landscape)';
+    const stackMQ = window.matchMedia(STACK_QUERY);
+    const compactMQ = window.matchMedia(COMPACT_QUERY);
 
     function scrollToSection(index) {
       if (index < 0 || index >= sections.length) return;
       currentSectionIndex = index;
+      navLock = true;
+      clearTimeout(navLockTimer);
+      navLockTimer = setTimeout(() => { navLock = false; }, 900);
       sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
+      onEnterSection(index);
+    }
+
+    /* 進入某一頁時要做的初始化（手機自然捲動時也會呼叫） */
+    function onEnterSection(index) {
+      lastEnteredIndex = index;
 
       if (index === 3) {
         currentIndex = 0;
@@ -1251,6 +1592,7 @@
     /* ---------- 完全鎖定滾輪換頁：只允許在內容區塊內上下滾動檢視 ---------- */
     window.addEventListener('wheel', (e) => {
       if (document.getElementById('videoModal').classList.contains('active')) return;
+      if (stackMQ.matches) return;
 
       const target = e.target;
       const isInsideDetails = target.closest('.slide-details') || target.closest('.game-content-box');
@@ -1275,6 +1617,13 @@
 
     function updateResumeTransform() {
       resumeImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+      updateResumeTouchAction();
+    }
+
+    /* 堆疊版：未放大時允許瀏覽器上下捲動換頁；放大後或橫放時由 JS 接管觸控 */
+    function updateResumeTouchAction() {
+      const zoomed = scale > 1.01;
+      resumeImg.style.touchAction = (zoomed || compactMQ.matches) ? 'none' : 'pan-y';
     }
 
     resumeImg.addEventListener('wheel', (e) => {
@@ -1312,7 +1661,7 @@
 
     let initialPinchDistance = null;
     resumeImg.addEventListener('touchstart', (e) => {
-      if (e.touches.length === 1) {
+      if (e.touches.length === 1 && scale > 1) {
         isDragging = true;
         startX = e.touches[0].clientX - pointX;
         startY = e.touches[0].clientY - pointY;
@@ -1341,10 +1690,14 @@
       }
     });
 
-    resumeImg.addEventListener('touchend', () => {
-      isDragging = false;
-      initialPinchDistance = null;
+    ['touchend', 'touchcancel'].forEach((evt) => {
+      resumeImg.addEventListener(evt, () => {
+        isDragging = false;
+        initialPinchDistance = null;
+      });
     });
+    updateResumeTouchAction();
+    compactMQ.addEventListener('change', updateResumeTouchAction);
 
     /* ---------- 手作作品輪播 ---------- */
     let currentIndex = 0;
@@ -1497,6 +1850,87 @@
         if (e.key === 'ArrowLeft') prevGameSlide();
       }
     });
+
+    /* ---------- 📱 手機版：左右滑動切換 + 自然捲動時追蹤目前頁面 ---------- */
+    const mobileMQ = stackMQ;
+
+    function addSwipe(el, onLeft, onRight) {
+      if (!el) return;
+      let sx = 0, sy = 0;
+      el.addEventListener('touchstart', (e) => {
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+      }, { passive: true });
+      el.addEventListener('touchend', (e) => {
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx;
+        const dy = t.clientY - sy;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+          if (dx < 0) onLeft(); else onRight();
+        }
+      }, { passive: true });
+    }
+
+    addSwipe(document.querySelector('.slider-wrapper'), nextSlide, prevSlide);
+    addSwipe(document.querySelector('.game-wrapper'), nextGameSlide, prevGameSlide);
+
+    window.addEventListener('scroll', () => {
+      if (!mobileMQ.matches || navLock) return;
+      if (document.getElementById('videoModal').classList.contains('active')) return;
+
+      const line = window.innerHeight * 0.4;
+      let idx = 0;
+      sections.forEach((s, i) => {
+        if (s.getBoundingClientRect().top <= line) idx = i;
+      });
+
+      if (idx !== lastEnteredIndex) {
+        currentSectionIndex = idx;
+        onEnterSection(idx);
+      }
+    }, { passive: true });
+
+    /* ---------- 📱 手機橫放：上下滑動換頁（等同電腦版的上下鍵） ---------- */
+    (function () {
+      const mainEl = document.getElementById('main-view');
+      let sx = 0, sy = 0, tracking = false, scroller = null, startAtTop = false, startAtBottom = false;
+
+      mainEl.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) { tracking = false; return; }
+        tracking = true;
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+        scroller = e.target.closest('.slide-details, .game-content-box');
+        if (scroller) {
+          startAtTop = scroller.scrollTop <= 0;
+          startAtBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2;
+        }
+        // 記下觸控目標，放大中的履歷不換頁
+        mainEl._touchOnZoomedResume = !!e.target.closest('#resumeImg') && scale > 1.01;
+      }, { passive: true });
+
+      mainEl.addEventListener('touchend', (e) => {
+        if (!tracking) return;
+        tracking = false;
+        if (!compactMQ.matches) return;
+        if (document.getElementById('videoModal').classList.contains('active')) return;
+        if (mainEl._touchOnZoomedResume) return;
+
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx;
+        const dy = t.clientY - sy;
+        if (Math.abs(dy) < 60 || Math.abs(dy) < Math.abs(dx) * 1.5) return;
+
+        // 文字區還沒捲到頭／尾時，讓它自己捲，不換頁
+        if (scroller && scroller.scrollHeight > scroller.clientHeight + 2) {
+          if (dy < 0 && !startAtBottom) return;
+          if (dy > 0 && !startAtTop) return;
+        }
+        scrollToSection(currentSectionIndex + (dy < 0 ? 1 : -1));
+      }, { passive: true });
+
+      mainEl.addEventListener('touchcancel', () => { tracking = false; }, { passive: true });
+    })();
 
     startAutoSlide();
   </script>
